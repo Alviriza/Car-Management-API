@@ -1,0 +1,1086 @@
+openapi: 3.0.1
+info:
+  title: Car Management Api
+  description: This is a Open API for Challenge 06 Full Stack Web Developer Binar
+    Academy - developed by Alviriza Ramadhan
+  version: 1.0.0
+servers:
+- url: http://localhost:8000
+tags:
+- name: User
+  description: Everything about user
+- name: Cars
+  description: Everything about cars
+paths:
+  /api/v1/cars:
+    get:
+      tags:
+      - Cars
+      summary: List all car
+      operationId: apiV1CarsGET
+      responses:
+        "200":
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/car'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorized, belum login"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+        "404":
+          description: Data mobil tidak ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+    post:
+      tags:
+      - Cars
+      summary: Create car
+      operationId: apiV1CarsPOST
+      requestBody:
+        description: "kombinasi dari name, price, size, dan image"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_cars_body'
+        required: true
+      responses:
+        "200":
+          description: Data mobil berhasil ditambahkan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createcar'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+        "422":
+          description: Data tidak diproses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+  /api/v1/deletedCars:
+    get:
+      tags:
+      - Cars
+      summary: List all car (deleted cars included)
+      operationId: apiV1DeletedCarsGET
+      responses:
+        "200":
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/car'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: "Unauthorized, belum login"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+        "404":
+          description: Data mobil tidak ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+  /api/v1/cars/{id}:
+    get:
+      tags:
+      - Cars
+      summary: Get car by id
+      operationId: apiV1CarsIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Data fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/car'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+        "404":
+          description: Tidak ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_1'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+    put:
+      tags:
+      - Cars
+      summary: Update Car
+      operationId: apiV1CarsIdPUT
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        description: "kombinasi dari name, price, size, dan image"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cars_id_body'
+        required: true
+      responses:
+        "200":
+          description: Data mobil berhasil diperbaharui
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updatecar'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401_1'
+        "404":
+          description: Tidak ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_1'
+        "422":
+          description: Data tidak diproses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+    delete:
+      tags:
+      - Cars
+      summary: Delete Car
+      operationId: apiV1CarsIdDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Data berhasil dihapus
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+        "404":
+          description: Tidak ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_1'
+        "422":
+          description: Data tidak diproses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Cars
+  /api/v1/login:
+    post:
+      tags:
+      - User
+      summary: User login
+      operationId: apiV1LoginPOST
+      requestBody:
+        description: Aktifitas login pada user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_login_body'
+        required: true
+      responses:
+        "201":
+          description: Login berhasil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/login'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401_2'
+        "404":
+          description: Email not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_2'
+      x-swagger-router-controller: User
+  /api/v1/typeuser:
+    post:
+      tags:
+      - User
+      summary: Create user role
+      operationId: apiV1TypeuserPOST
+      requestBody:
+        description: Membuat user role oleh superadmin
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_typeuser_body'
+        required: true
+      responses:
+        "200":
+          description: User role berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usertype'
+        "422":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_422_1'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: User
+  /api/v1/admin/add:
+    post:
+      tags:
+      - User
+      summary: Create new admin by superadmin
+      operationId: apiV1AdminAddPOST
+      requestBody:
+        description: Deskripsi yang berisi request body yang terdiri dari email dan
+          password admin baru
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/admin_add_body'
+        required: true
+      responses:
+        "201":
+          description: Admin berhasil dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addadmin'
+        "400":
+          description: Ketika email yang didaftarkan telah ada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_3'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: User
+  /api/v1/member/add:
+    post:
+      tags:
+      - User
+      summary: Create new member
+      operationId: apiV1MemberAddPOST
+      requestBody:
+        description: Kombinasi antara email dan password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/member_add_body'
+        required: true
+      responses:
+        "201":
+          description: Data dibuat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/adduser'
+        "400":
+          description: Ketika email yang didaftarkan telah ada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_4'
+      x-swagger-router-controller: User
+  /api/v1/whoami:
+    get:
+      tags:
+      - User
+      summary: Get current user with token
+      operationId: apiV1WhoamiGET
+      responses:
+        "200":
+          description: Data diperoleh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_401_3'
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: User
+components:
+  schemas:
+    car:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+        cars:
+          $ref: '#/components/schemas/car_cars'
+      example:
+        cars:
+          image: toyotafortuner.png
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          operations:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            iduser: 3
+            updatedBy: 4
+            createdBy: 4
+            id: 1
+            deletedBy: 4
+            idcar: 2
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          size: Large
+          price: 450000
+          name: Toyota Fortuner
+          id: 1
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        status: OK
+    createcar:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Data mobil berhasil dibuat!
+        cars:
+          $ref: '#/components/schemas/createcar_cars'
+        userInfo:
+          $ref: '#/components/schemas/createcar_userInfo'
+      example:
+        cars:
+          image: pajeroo.png
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          operations:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            iduser: 3
+            updatedBy: 0
+            createdBy: 4
+            id: 1
+            deletedBy: 6
+            idcar: 2
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          size: Large
+          price: 400000
+          name: Pajero Sport
+          id: 1
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        userInfo:
+          id: 1
+          email: superadmin@gmail.com
+        status: Data mobil berhasil dibuat!
+    updatecar:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Data mobil telah berhasil diperbarui!
+        cars:
+          $ref: '#/components/schemas/updatecar_cars'
+        userInfo:
+          $ref: '#/components/schemas/updatecar_userInfo'
+      example:
+        cars:
+          image: avanzabos.png
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          operations:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            iduser: 3
+            updatedBy: 5
+            createdBy: 4
+            id: 1
+            deletedBy: 0
+            idcar: 2
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          size: Medium
+          price: 300000
+          name: Toyota Avanza
+          id: 1
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        userInfo:
+          id: 1
+          email: alviriza@gmail.com
+        status: Data mobil telah berhasil diperbarui!
+    login:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: alviriza@gmail.com
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbHZpcml6YUBnbWFpbC5jb20iLCJyb2xlIjoxLCJjcmVhdGVkQXQiOiIyMDIyLTEwLTIxVDIzOjIwOjQzLjI2MVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTEwLTIxVDIzOjIwOjQzLjI2MVoiLCJpYXQiOjE2NjY0NTg4OTgsImV4cCI6MTY2NjQ1OTQ5OH0.ComemwEeFlbEI4t6uqevNO5yZQFj0z2WtPaG2xzNdfY
+        role:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        role: 1
+        id: 1
+        email: alviriza@gmail.com
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbHZpcml6YUBnbWFpbC5jb20iLCJyb2xlIjoxLCJjcmVhdGVkQXQiOiIyMDIyLTEwLTIxVDIzOjIwOjQzLjI2MVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTEwLTIxVDIzOjIwOjQzLjI2MVoiLCJpYXQiOjE2NjY0NTg4OTgsImV4cCI6MTY2NjQ1OTQ5OH0.ComemwEeFlbEI4t6uqevNO5yZQFj0z2WtPaG2xzNdfY
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    usertype:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: superadmin
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 1
+        type: superadmin
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    addadmin:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Admin dibuat!
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: adminsatu@gmail.com
+        idtype:
+          type: integer
+          example: 2
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        idtype: 2
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 1
+        message: Admin dibuat!
+        email: adminsatu@gmail.com
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    adduser:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Member dibuat!
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: membersatu@gmail.com
+        idtype:
+          type: integer
+          example: 3
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        idtype: 3
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 1
+        message: Member dibuat!
+        email: membersatu@gmail.com
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: alviriza@gmail.com
+        desc:
+          type: string
+          example: Anda adalah Super Admin
+      example:
+        id: 1
+        email: alviriza@gmail.com
+        desc: Anda adalah Super Admin
+    inline_response_400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: car operations does not exist
+    inline_response_401:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Anda tidak punya akses (Unauthorized)
+    inline_response_404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: "Tidak ada data mobil, Mohon masukkan data mobil!"
+    v1_cars_body:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Pajero Sport
+        price:
+          type: integer
+          example: 400000
+        size:
+          type: string
+          example: Large
+        image:
+          type: string
+          example: pajeroo.png
+    inline_response_400_1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: "Name, price, size, dan image are required"
+    inline_response_422:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Data tidak diproses!
+    inline_response_400_2:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: car id tidak sesuai
+    inline_response_404_1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: data mobil tidak ditemukan!
+    cars_id_body:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Toyota Avanza
+        price:
+          type: integer
+          example: 300000
+        size:
+          type: string
+          example: Medium
+        image:
+          type: string
+          example: avanzabos.png
+    inline_response_401_1:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Anda tidak punya akses (Unauthorized)
+    inline_response_200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+        message:
+          type: string
+          example: Data mobil berhasil dihapus!
+      example:
+        message: Data mobil berhasil dihapus!
+        status: OK
+    v1_login_body:
+      type: object
+      properties:
+        email:
+          type: string
+          example: alviriza@gmail.com
+        password:
+          type: string
+          example: Alvi123
+    inline_response_401_2:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Password salah!
+    inline_response_404_2:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Email tidak ditemukan!
+    v1_typeuser_body:
+      type: object
+      properties:
+        type:
+          type: string
+          example: superadmin
+    inline_response_422_1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Role gagal dibuat!
+    admin_add_body:
+      type: object
+      properties:
+        email:
+          type: string
+          example: adminsatu@mail.com
+        password:
+          type: string
+          example: adminsatu123
+    inline_response_400_3:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: Email telah digunakan!
+    member_add_body:
+      type: object
+      properties:
+        email:
+          type: string
+          example: membersatu@mail.com
+        password:
+          type: string
+          example: Satu123
+    inline_response_400_4:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Email telah digunakan!
+    inline_response_401_3:
+      type: object
+      properties:
+        status:
+          type: string
+          example: FAIL
+        message:
+          type: string
+          example: "Unauthorized, Silahkan login dahulu!"
+    car_cars_operations:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        idcar:
+          type: integer
+          example: 2
+        iduser:
+          type: integer
+          example: 3
+        createdBy:
+          type: integer
+          example: 4
+        updatedBy:
+          type: integer
+          example: 4
+        deletedBy:
+          type: integer
+          example: 4
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        iduser: 3
+        updatedBy: 4
+        createdBy: 4
+        id: 1
+        deletedBy: 4
+        idcar: 2
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    car_cars:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Toyota Fortuner
+        price:
+          type: integer
+          example: 450000
+        size:
+          type: string
+          example: Large
+        image:
+          type: string
+          example: toyotafortuner.png
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+        operations:
+          $ref: '#/components/schemas/car_cars_operations'
+      example:
+        image: toyotafortuner.png
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        deletedAt: 2000-01-23T04:56:07.000+00:00
+        operations:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          iduser: 3
+          updatedBy: 4
+          createdBy: 4
+          id: 1
+          deletedBy: 4
+          idcar: 2
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        size: Large
+        price: 450000
+        name: Toyota Fortuner
+        id: 1
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    createcar_cars_operations:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        idcar:
+          type: integer
+          example: 2
+        iduser:
+          type: integer
+          example: 3
+        createdBy:
+          type: integer
+          example: 4
+        updatedBy:
+          type: integer
+        deletedBy:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        iduser: 3
+        updatedBy: 0
+        createdBy: 4
+        id: 1
+        deletedBy: 6
+        idcar: 2
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    createcar_cars:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Pajero Sport
+        price:
+          type: integer
+          example: 400000
+        size:
+          type: string
+          example: Large
+        image:
+          type: string
+          example: pajeroo.png
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+        operations:
+          $ref: '#/components/schemas/createcar_cars_operations'
+      example:
+        image: pajeroo.png
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        deletedAt: 2000-01-23T04:56:07.000+00:00
+        operations:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          iduser: 3
+          updatedBy: 0
+          createdBy: 4
+          id: 1
+          deletedBy: 6
+          idcar: 2
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        size: Large
+        price: 400000
+        name: Pajero Sport
+        id: 1
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    createcar_userInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: superadmin@gmail.com
+      example:
+        id: 1
+        email: superadmin@gmail.com
+    updatecar_cars_operations:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        idcar:
+          type: integer
+          example: 2
+        iduser:
+          type: integer
+          example: 3
+        createdBy:
+          type: integer
+          example: 4
+        updatedBy:
+          type: integer
+          example: 5
+        deletedBy:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        iduser: 3
+        updatedBy: 5
+        createdBy: 4
+        id: 1
+        deletedBy: 0
+        idcar: 2
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    updatecar_cars:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Toyota Avanza
+        price:
+          type: integer
+          example: 300000
+        size:
+          type: string
+          example: Medium
+        image:
+          type: string
+          example: avanzabos.png
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+        operations:
+          $ref: '#/components/schemas/updatecar_cars_operations'
+      example:
+        image: avanzabos.png
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        deletedAt: 2000-01-23T04:56:07.000+00:00
+        operations:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          iduser: 3
+          updatedBy: 5
+          createdBy: 4
+          id: 1
+          deletedBy: 0
+          idcar: 2
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        size: Medium
+        price: 300000
+        name: Toyota Avanza
+        id: 1
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+    updatecar_userInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: alviriza@gmail.com
+      example:
+        id: 1
+        email: alviriza@gmail.com
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
